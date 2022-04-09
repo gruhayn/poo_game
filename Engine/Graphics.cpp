@@ -257,6 +257,96 @@ void Graphics::DrawCircle( int x,int y,int radius,Color c )
 	}
 }
 
+void Graphics::DrawSpriteNonChroma(int x, int y, const Surface& s)
+{
+	DrawSpriteNonChroma(x, y, s.GetRect(), s);
+}
+
+void Graphics::DrawSpriteNonChroma(int x, int y, const RectI& r, const Surface& s)
+{
+	DrawSpriteNonChroma(x, y, s.GetRect(), GetScreenRectI(), s);
+}
+
+void Graphics::DrawSpriteNonChroma(int x, int y, RectI r, const RectI& clip, const Surface& s)
+{
+	assert(r.left >= 0);
+	assert(r.right < s.GetWidth());
+	assert(r.top >= 0);
+	assert(r.bottom < s.GetHeight());
+
+	if (x < clip.left) {
+		r.left += clip.left - x;
+		x = clip.left;
+	}
+	if (y < clip.top) {
+		r.top += clip.top - y;
+		y = clip.top;
+	}
+
+	if (x + r.GetWidth() > clip.right) {
+		r.right -= x + r.GetWidth() - clip.right;
+	}
+
+	if (y + r.GetHeight() > clip.bottom) {
+		r.bottom -= y + r.GetHeight() - clip.bottom;
+	}
+
+	for (int i = r.left; i < r.right; i++)
+	{
+		for (int j = r.top; j < r.bottom; j++)
+		{
+			PutPixel(x + i - r.left, y + j - r.top, s.GetPixel(i, j));
+		}
+	}
+
+}
+
+void Graphics::DrawSprite(int x, int y, const Surface& s, Color chroma)
+{
+	DrawSprite(x, y, s.GetRect(), s, chroma);
+}
+
+void Graphics::DrawSprite(int x, int y, const RectI& r, const Surface& s, Color chroma)
+{
+	DrawSprite(x, y, r, GetScreenRectI(), s, chroma);
+}
+
+void Graphics::DrawSprite(int x, int y, RectI r, const RectI& clip, const Surface& s, Color chroma)
+{
+	assert(r.left >= 0);
+	assert(r.right < s.GetWidth());
+	assert(r.top >= 0);
+	assert(r.bottom < s.GetHeight());
+
+	if (x < clip.left) {
+		r.left += clip.left - x;
+		x = clip.left;
+	}
+	if (y < clip.top) {
+		r.top += clip.top - y;
+		y = clip.top;
+	}
+
+	if (x + r.GetWidth() > clip.right) {
+		r.right -= x + r.GetWidth() - clip.right;
+	}
+
+	if (y + r.GetHeight() > clip.bottom) {
+		r.bottom -= y + r.GetHeight() - clip.bottom;
+	}
+
+	for (int i = r.left; i < r.right; i++)
+	{
+		for (int j = r.top; j < r.bottom; j++)
+		{
+			Color pixelColor = s.GetPixel(i, j);
+			if (pixelColor != chroma) {
+				PutPixel(x + i - r.left, y + j - r.top, s.GetPixel(i, j));
+			}
+		}
+	}
+}
+
 Graphics::~Graphics()
 {
 	// free sysbuffer memory (aligned free)
@@ -267,6 +357,11 @@ Graphics::~Graphics()
 	}
 	// clear the state of the device context before destruction
 	if( pImmediateContext ) pImmediateContext->ClearState();
+}
+
+RectI Graphics::GetScreenRectI()
+{
+	return { 0, ScreenWidth, 0, ScreenHeight };
 }
 
 void Graphics::EndFrame()

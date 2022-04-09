@@ -10,7 +10,7 @@ public:
 	void Init( const Vec2& pos_in,const Vec2& vel_in );
 	void Update( float dt );
 	bool TestCollision( const Dude& dude ) const;
-	void Draw( Graphics& gfx ) const;
+	Vec2 GetPos() const;
 private:
 	Vec2 pos;
 	Vec2 vel;

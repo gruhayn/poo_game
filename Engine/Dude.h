@@ -9,7 +9,6 @@ class Dude
 {
 public:
 	void ClampToScreen();
-	void Draw( Graphics& gfx ) const;
 	void Update( const Keyboard& kbd,float dt );
 	void Update( const Mouse& mouse,float dt );
 	Vec2 GetPos() const;

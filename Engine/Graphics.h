@@ -23,6 +23,8 @@
 #include <wrl.h>
 #include "ChiliException.h"
 #include "Colors.h"
+#include "RectI.h"
+#include "Surface.h"
 
 class Graphics
 {
@@ -62,6 +64,14 @@ public:
 		DrawRect( x0,y0,x0 + width,y0 + height,c );
 	}
 	void DrawCircle( int x,int y,int radius,Color c );
+
+	void DrawSpriteNonChroma(int x, int y, const Surface& s);
+	void DrawSpriteNonChroma(int x, int y, const RectI& r, const Surface& s);
+	void DrawSpriteNonChroma(int x, int y, RectI r, const RectI& clip, const Surface& s);
+	void DrawSprite(int x, int y, const Surface& s, Color chroma = Colors::Magenta);
+	void DrawSprite(int x, int y, const RectI& r, const Surface& s, Color chroma = Colors::Magenta);
+	void DrawSprite(int x, int y, RectI r, const RectI& clip, const Surface& s, Color chroma = Colors::Magenta);
+
 	~Graphics();
 private:
 	Microsoft::WRL::ComPtr<IDXGISwapChain>				pSwapChain;
@@ -80,4 +90,5 @@ private:
 public:
 	static constexpr int ScreenWidth = 800;
 	static constexpr int ScreenHeight = 600;
+	static RectI GetScreenRectI();
 };

@@ -30,6 +30,7 @@
 #include "SoundEffect.h"
 #include <random>
 #include "FrameTimer.h"
+#include "Surface.h"
 
 class Game
 {
@@ -59,6 +60,11 @@ private:
 	Dude dude;
 	Goal goal;
 	Meter meter;
+	Surface dudeSprite = Surface("awsom.bmp");
+	Surface titleScreenSprite = Surface("dapoopoo.bmp");
+	Surface gameOverSprite = Surface("game_over.bmp");
+	Surface pooSprite = Surface("poo.bmp");
+
 	static constexpr int nPoo = 10;
 	Poo poos[nPoo];
 	bool isStarted = false;
